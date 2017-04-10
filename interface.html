@@ -1,0 +1,222 @@
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /><script type='text/javascript' src='https://s3.amazonaws.com/mturk-public/externalHIT_v1.js'></script>
+<link href="https://s3.amazonaws.com/mturk-public/bs30/css/bootstrap.min.css" rel="stylesheet" /><script src="//code.jquery.com/jquery-1.10.2.js"></script><script>
+function diffImage(img) 
+{
+   if(img.src.match("http://xxx/turk/cross.jpg")) img.src = img.alt;
+   else img.src = "http://xxx/turk/cross.jpg";
+}
+
+</script>
+<form action="https://www.mturk.com/mturk/externalSubmit" id="mturk_form" method="post" name="mturk_form"><input id="assignmentId" name="assignmentId" type="hidden" value="" />
+<div class="panel panel-primary">
+<div class="panel-heading"><strong>Instructions: What is the common concept that describe these images?</strong></div>
+
+<div class="panel-body">
+<p><strong>Task 1: Write one or two words that describe the common concept among the most of these images below. Try to find the description that is as general as needed to cover as many images as possible.</strong></p>
+
+<ul>
+	<li><strong>Only one concept for these images. If there are multiple concepts, chose the most frequent one. Try to be specific: we prefer &quot;car&quot; than to say &quot;vehicle&quot; and even &quot;metallic objects&quot;. But do not pick a concept that only applies to a few images.</strong></li>
+	<li><strong>Valid description could be: person, lamp, arch, fencing, round, square pattern, vertical line, striped pattern...</strong></li>
+</ul>
+
+<p><strong><strong>Task 2: Click on the images that DO NOT correspond to your description (Note that if you click twice on an image you will revert the selection as correct).</strong></strong></p>
+
+<p><strong><strong><strong>Task 3: Select the category your description mostly belong to.</strong></strong></strong></p>
+<strong><strong><strong><a href="http://gigasun.csail.mit.edu/deeplearning/visualization/turk/instruction.html" target="_blank">help: annotation examples</a></strong> </strong></strong></div>
+</div>
+<strong><strong> </strong></strong>
+
+<h3><strong><strong><strong>Task 1</strong></strong></strong></h3>
+<strong><strong> <label>Word/Short description:</label> <input id="tag1" name="tag1" type="text" /> </strong></strong>
+
+<h3><strong><strong><strong>Task 2</strong></strong></strong></h3>
+<strong><strong> </strong></strong>
+
+<p><strong><strong>Mark (by clicking on them) the images which don&#39;t correspond to the short description you just wrote</strong></strong></p>
+<strong><strong> </strong></strong>
+
+<table>
+	<tbody>
+		<tr>
+			<td><strong><strong><label for="checkbox1"><img alt="${image1}" onclick="diffImage(this)" src="${image1}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox1" name="${image1_gt}" style="opacity:0" type="checkbox" value="image1" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox2"><img alt="${image2}" onclick="diffImage(this)" src="${image2}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox2" name="${image2_gt}" style="opacity:0" type="checkbox" value="image2" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox3"><img alt="${image3}" onclick="diffImage(this)" src="${image3}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox3" name="${image3_gt}" style="opacity:0" type="checkbox" value="image3" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox4"><img alt="${image4}" onclick="diffImage(this)" src="${image4}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox4" name="${image4_gt}" style="opacity:0" type="checkbox" value="image4" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox5"><img alt="${image5}" onclick="diffImage(this)" src="${image5}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox5" name="${image5_gt}" style="opacity:0" type="checkbox" value="image5" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox6"><img alt="${image6}" onclick="diffImage(this)" src="${image6}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox6" name="${image6_gt}" style="opacity:0" type="checkbox" value="image6" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox7"><img alt="${image7}" onclick="diffImage(this)" src="${image7}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox7" name="${image7_gt}" style="opacity:0" type="checkbox" value="image7" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox8"><img alt="${image8}" onclick="diffImage(this)" src="${image8}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox8" name="${image8_gt}" style="opacity:0" type="checkbox" value="image8" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox9"><img alt="${image9}" onclick="diffImage(this)" src="${image9}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox9" name="${image9_gt}" style="opacity:0" type="checkbox" value="image9" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox10"><img alt="${image10}" onclick="diffImage(this)" src="${image10}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox10" name="${image10_gt}" style="opacity:0" type="checkbox" value="image10" /></strong></strong></td>
+		</tr>
+		<tr>
+			<td><strong><strong><label for="checkbox11"><img alt="${image11}" onclick="diffImage(this)" src="${image11}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox11" name="${image11_gt}" style="opacity:0" type="checkbox" value="image11" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox12"><img alt="${image12}" onclick="diffImage(this)" src="${image12}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox12" name="${image12_gt}" style="opacity:0" type="checkbox" value="image12" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox13"><img alt="${image13}" onclick="diffImage(this)" src="${image13}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox13" name="${image13_gt}" style="opacity:0" type="checkbox" value="image13" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox14"><img alt="${image14}" onclick="diffImage(this)" src="${image14}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox14" name="${image14_gt}" style="opacity:0" type="checkbox" value="image14" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox15"><img alt="${image15}" onclick="diffImage(this)" src="${image15}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox15" name="${image15_gt}" style="opacity:0" type="checkbox" value="image15" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox16"><img alt="${image16}" onclick="diffImage(this)" src="${image16}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox16" name="${image16_gt}" style="opacity:0" type="checkbox" value="image16" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox17"><img alt="${image17}" onclick="diffImage(this)" src="${image17}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox17" name="${image17_gt}" style="opacity:0" type="checkbox" value="image17" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox18"><img alt="${image18}" onclick="diffImage(this)" src="${image18}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox18" name="${image18_gt}" style="opacity:0" type="checkbox" value="image18" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox19"><img alt="${image19}" onclick="diffImage(this)" src="${image19}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox19" name="${image19_gt}" style="opacity:0" type="checkbox" value="image19" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox20"><img alt="${image20}" onclick="diffImage(this)" src="${image20}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox20" name="${image20_gt}" style="opacity:0" type="checkbox" value="image20" /></strong></strong></td>
+		</tr>
+		<tr>
+			<td><strong><strong><label for="checkbox21"><img alt="${image21}" onclick="diffImage(this)" src="${image21}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox21" name="${image21_gt}" style="opacity:0" type="checkbox" value="image21" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox22"><img alt="${image22}" onclick="diffImage(this)" src="${image22}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox22" name="${image22_gt}" style="opacity:0" type="checkbox" value="image22" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox23"><img alt="${image23}" onclick="diffImage(this)" src="${image23}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox23" name="${image23_gt}" style="opacity:0" type="checkbox" value="image23" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox24"><img alt="${image24}" onclick="diffImage(this)" src="${image24}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox24" name="${image24_gt}" style="opacity:0" type="checkbox" value="image24" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox25"><img alt="${image25}" onclick="diffImage(this)" src="${image25}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox25" name="${image25_gt}" style="opacity:0" type="checkbox" value="image25" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox26"><img alt="${image26}" onclick="diffImage(this)" src="${image26}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox26" name="${image26_gt}" style="opacity:0" type="checkbox" value="image26" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox27"><img alt="${image27}" onclick="diffImage(this)" src="${image27}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox27" name="${image27_gt}" style="opacity:0" type="checkbox" value="image27" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox28"><img alt="${image28}" onclick="diffImage(this)" src="${image28}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox28" name="${image28_gt}" style="opacity:0" type="checkbox" value="image28" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox29"><img alt="${image29}" onclick="diffImage(this)" src="${image29}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox29" name="${image29_gt}" style="opacity:0" type="checkbox" value="image29" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox30"><img alt="${image30}" onclick="diffImage(this)" src="${image30}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox30" name="${image30_gt}" style="opacity:0" type="checkbox" value="image30" /></strong></strong></td>
+		</tr>
+		<tr>
+			<td><strong><strong><label for="checkbox31"><img alt="${image31}" onclick="diffImage(this)" src="${image31}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox31" name="${image31_gt}" style="opacity:0" type="checkbox" value="image31" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox32"><img alt="${image32}" onclick="diffImage(this)" src="${image32}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox32" name="${image32_gt}" style="opacity:0" type="checkbox" value="image32" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox33"><img alt="${image33}" onclick="diffImage(this)" src="${image33}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox33" name="${image33_gt}" style="opacity:0" type="checkbox" value="image33" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox34"><img alt="${image34}" onclick="diffImage(this)" src="${image34}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox34" name="${image34_gt}" style="opacity:0" type="checkbox" value="image34" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox35"><img alt="${image35}" onclick="diffImage(this)" src="${image35}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox35" name="${image35_gt}" style="opacity:0" type="checkbox" value="image35" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox36"><img alt="${image36}" onclick="diffImage(this)" src="${image36}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox36" name="${image36_gt}" style="opacity:0" type="checkbox" value="image36" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox37"><img alt="${image37}" onclick="diffImage(this)" src="${image37}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox37" name="${image37_gt}" style="opacity:0" type="checkbox" value="image37" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox38"><img alt="${image38}" onclick="diffImage(this)" src="${image38}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox38" name="${image38_gt}" style="opacity:0" type="checkbox" value="image38" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox39"><img alt="${image39}" onclick="diffImage(this)" src="${image39}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox39" name="${image39_gt}" style="opacity:0" type="checkbox" value="image39" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox40"><img alt="${image40}" onclick="diffImage(this)" src="${image40}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox40" name="${image40_gt}" style="opacity:0" type="checkbox" value="image40" /></strong></strong></td>
+		</tr>
+		<tr>
+			<td><strong><strong><label for="checkbox41"><img alt="${image41}" onclick="diffImage(this)" src="${image41}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox41" name="${image41_gt}" style="opacity:0" type="checkbox" value="image41" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox42"><img alt="${image42}" onclick="diffImage(this)" src="${image42}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox42" name="${image42_gt}" style="opacity:0" type="checkbox" value="image42" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox43"><img alt="${image43}" onclick="diffImage(this)" src="${image43}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox43" name="${image43_gt}" style="opacity:0" type="checkbox" value="image43" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox44"><img alt="${image44}" onclick="diffImage(this)" src="${image44}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox44" name="${image44_gt}" style="opacity:0" type="checkbox" value="image44" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox45"><img alt="${image45}" onclick="diffImage(this)" src="${image45}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox45" name="${image45_gt}" style="opacity:0" type="checkbox" value="image45" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox46"><img alt="${image46}" onclick="diffImage(this)" src="${image46}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox46" name="${image46_gt}" style="opacity:0" type="checkbox" value="image46" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox47"><img alt="${image47}" onclick="diffImage(this)" src="${image47}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox47" name="${image47_gt}" style="opacity:0" type="checkbox" value="image47" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox48"><img alt="${image48}" onclick="diffImage(this)" src="${image48}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox48" name="${image48_gt}" style="opacity:0" type="checkbox" value="image48" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox49"><img alt="${image49}" onclick="diffImage(this)" src="${image49}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox49" name="${image49_gt}" style="opacity:0" type="checkbox" value="image49" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox50"><img alt="${image50}" onclick="diffImage(this)" src="${image50}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox50" name="${image50_gt}" style="opacity:0" type="checkbox" value="image50" /></strong></strong></td>
+		</tr>
+		<tr>
+			<td><strong><strong><label for="checkbox51"><img alt="${image51}" onclick="diffImage(this)" src="${image51}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox51" name="${image51_gt}" style="opacity:0" type="checkbox" value="image51" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox52"><img alt="${image52}" onclick="diffImage(this)" src="${image52}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox52" name="${image52_gt}" style="opacity:0" type="checkbox" value="image52" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox53"><img alt="${image53}" onclick="diffImage(this)" src="${image53}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox53" name="${image53_gt}" style="opacity:0" type="checkbox" value="image53" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox54"><img alt="${image54}" onclick="diffImage(this)" src="${image54}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox54" name="${image54_gt}" style="opacity:0" type="checkbox" value="image54" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox55"><img alt="${image55}" onclick="diffImage(this)" src="${image55}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox55" name="${image55_gt}" style="opacity:0" type="checkbox" value="image55" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox56"><img alt="${image56}" onclick="diffImage(this)" src="${image56}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox56" name="${image56_gt}" style="opacity:0" type="checkbox" value="image56" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox57"><img alt="${image57}" onclick="diffImage(this)" src="${image57}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox57" name="${image57_gt}" style="opacity:0" type="checkbox" value="image57" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox58"><img alt="${image58}" onclick="diffImage(this)" src="${image58}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox58" name="${image58_gt}" style="opacity:0" type="checkbox" value="image58" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox59"><img alt="${image59}" onclick="diffImage(this)" src="${image59}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox59" name="${image59_gt}" style="opacity:0" type="checkbox" value="image59" /></strong></strong></td>
+			<td><strong><strong><label for="checkbox60"><img alt="${image60}" onclick="diffImage(this)" src="${image60}" /> </label></strong></strong></td>
+			<td><strong><strong><input checked="checked" id="checkbox60" name="${image60_gt}" style="opacity:0" type="checkbox" value="image60" /></strong></strong></td>
+		</tr>
+	</tbody>
+</table>
+<strong><strong> </strong></strong>
+
+<h3><strong><strong><strong>Task 3</strong></strong></strong></h3>
+<strong><strong> Which category does your short description mostly belong to? <label><input name="option" type="radio" value="op1" />Scene (kitchen, corridor, street, beach, ...) </label> <label><input name="option" type="radio" value="op3" />Region or surface (road, grass, wall, floor, sky, ...)</label> <label><input name="option" type="radio" value="op2" />Object (bed, car, building, tree, ...)</label> <label><input name="option" type="radio" value="op4" />Object part (leg, head, wheel, roof, ...)</label> <label><input name="option" type="radio" value="op5" />Texture or material (striped, rugged, wooden, plastic, ...)</label> <label><input name="option" type="radio" value="op6" />Simple elements or colors (vertical line, curved line, color blue, ....)</label> <input id="submitButton" type="submit" value="Submit" /> </strong></strong>
+
+<h4 id="statusText"><strong><strong>&nbsp;</strong></strong></h4>
+<strong><strong> <script language='Javascript'>turkSetAssignmentID();</script><script>
+var tryCount = 0;
+$('#mturk_form').submit(function() {
+    if ($.trim($("#tag1").val()) === "" ){
+        $("#statusText").html('You did not fill out the description!');
+        return false;
+    }
+    var numberOfNegativeUnchecked = $("[name='negative']:checked").size();
+    if (numberOfNegativeUnchecked != 0 && tryCount<3){
+        tryCount = tryCount+1;
+        $("#statusText").html('Your accuracy is too low, please revise!');
+        return false;
+    }
+    var numberOfPositiveUnchecked = $("[name='positive']:checked").size();
+    if (numberOfPositiveUnchecked < 10 ){
+        $("#statusText").html('Your accuracy is too low, please revise!');
+        return false;
+    }
+    
+    if ($("input:radio[name='option']").is(":checked") == 0){
+        $("#statusText").html('You have to choose one category!');
+        return false;
+    }
+});
+</script><!-- close container -->
+<style type="text/css">img {
+    width:120px;
+    height:auto;
+}
+label {
+    border-radius:2px;
+    border: 2px solid white;
+    display: block;
+}
+label:hover {
+    border: 2px solid #333333;
+    background: #ffffff;
+    opacity:0.9;
+    cursor: pointer;
+}
+</style>
+</strong></strong></form>
+
