@@ -1,4 +1,4 @@
-# UnitVisSeg: Toolkit for Unit Visualization and Segmentation.
+# UnitVisSeg: Toolkit for Visualizing and Segmenting Units in Deep CNNs.
 
 ## Introduction
 This repository contains the codes and results for unit visualization and segmentation. Some of the codes have been used for the [ICLR'15 paper](https://arxiv.org/pdf/1412.6856.pdf) Object Detectors Emerge in Deep Scene CNNs. You can use this toolkit with the naive [caffe]((https://github.com/BVLC/caffe), with matcaffe and pycaffe compiled. This toolkit includes the following functions:
@@ -15,7 +15,7 @@ This repository contains the codes and results for unit visualization and segmen
     git clone https://github.com/metalbubble/unitvisseg.git
     cd unitvisseg
 ```
-* Download the Broden dataset and the pretrained models
+* Download the image samples and the pretrained models
 ```
     sh download_images.sh
     sh download_pretrain.sh
