@@ -5,8 +5,8 @@ addpath('/data/vision/torralba/gigaSUN/caffe-cuda8.0/matlab');
 %% the candidate image set: in the ICLR'15 experiments, we combine the images of SUN397 and the images of ILSVRC'12 validation set. You could use your own image set.
 
 target_folder = 'result_segments';
-imageList = textread('dataset/imglist_unisegV4.txt','%s');
-root_dataset = 'dataset/uniseg4_384';
+imageList = textread('images/imagelist.txt','%s');
+root_dataset = 'images';
 nImgs = numel(imageList);
 for i=1:nImgs
     imageList{i} = fullfile(root_dataset, imageList{i});

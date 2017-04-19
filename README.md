@@ -1,9 +1,9 @@
-# Toolkit for Unit Segmentation and Annotation
+# Unit Visualization and Segmentation Toolkit
 
 ## Introduction
 This repository contains the demo codes and results for the [ICLR'15 paper](https://arxiv.org/pdf/1412.6856.pdf) Object Detectors Emerge in Deep Scene CNNs. You can use this code with the naive [caffe]((https://github.com/BVLC/caffe), with matcaffe and pycaffe compiled. This toolkit includes the following functions:
 
-*generate_unitsegments.m: Code to generate the visualization of unit
+*generate_unitsegments.m: Code to generate the visualization for all the units at one layer.
 *unit_annotation: the results of unit annotation for Places-AlexNet and ImageNet-AlexNet.
 *unit_segmentation: the code to generate image segmentation for a single image using the synthetic receptive field.
 *minimal_image: possion removal of the image content, to generate the minimal images.
@@ -17,7 +17,7 @@ This repository contains the demo codes and results for the [ICLR'15 paper](http
 ```
 * Download the Broden dataset and the pretrained models
 ```
-    sh download_broden.sh
+    sh download_images.sh
     sh download_pretrain.sh
 ``` 
 
