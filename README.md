@@ -1,7 +1,7 @@
-# Unit Visualization and Segmentation Toolkit
+# UnitVisSeg: Toolkit for Unit Visualization and Segmentation.
 
 ## Introduction
-This repository contains the demo codes and results for the [ICLR'15 paper](https://arxiv.org/pdf/1412.6856.pdf) Object Detectors Emerge in Deep Scene CNNs. You can use this code with the naive [caffe]((https://github.com/BVLC/caffe), with matcaffe and pycaffe compiled. This toolkit includes the following functions:
+This repository contains the codes and results for unit visualization and segmentation. Some of the codes have been used for the [ICLR'15 paper](https://arxiv.org/pdf/1412.6856.pdf) Object Detectors Emerge in Deep Scene CNNs. You can use this toolkit with the naive [caffe]((https://github.com/BVLC/caffe), with matcaffe and pycaffe compiled. This toolkit includes the following functions:
 
 *generate_unitsegments.m: Code to generate the visualization for all the units at one layer.
 *unit_annotation: the results of unit annotation for Places-AlexNet and ImageNet-AlexNet.
@@ -12,8 +12,8 @@ This repository contains the demo codes and results for the [ICLR'15 paper](http
 ## Download
 * Clone the code from github
 ```
-    git clone https://github.com/metalbubble/unitsegmentation_toolkit.git
-    cd unitsegmentation_toolkit
+    git clone https://github.com/metalbubble/unitvisseg.git
+    cd unitvisseg
 ```
 * Download the Broden dataset and the pretrained models
 ```
@@ -50,7 +50,7 @@ It generates the image segmentation like this:
 ![unitsegmentation](http://places.csail.mit.edu/unit_annotation/images/sample_segment.png)
 
 ## References
-If you find the annotation useful, please cite our ICLR'15 paper:
+If you find the toolkit useful, please cite our ICLR'15 paper:
 ```
     Bolei Zhou, Aditya Khosla, Agata Lapedriza, Aude Oliva, and Antonio Torralba
     Object Detectors Emerge in Deep Scene CNNs.
