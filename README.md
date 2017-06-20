@@ -27,7 +27,7 @@ Properly set up the caffe path in the shell scripts, matlab scripts, and python 
 
 * Generate the visualization for all the units in one layer of a given CNN. It gets the top ranked images for each unit then segment them using the approximate receptive field of the units. The results are output to result_segments. After it finishes, you could click ```result_segments/places205_alexnet.html``` to see the visualization of unit segmentation.
 ```
-    matlab -nodisplay -r generate_unitsegments.m
+    matlab -nodisplay -r generate_unitsegments
 ```
 Samples of unit segmentation are shown below. Each row indicates the images segmented by the receptive field of one unit.
 ![segmentation](http://places.csail.mit.edu/unit_annotation/images/unitsegmentation_new.png)
