@@ -140,15 +140,16 @@ if False:
     plt.show()
 
 
-# In[ ]:
 
 def input_image_filename(basename, iter, zunit):
-    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_finetune' +
-            '/%s_iter_%d/html/image/conv5-%04d.jpg' % (basename, iter, zunit))
+#    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_finetune' +
+    return ('/data/vision/torralba/scratch2/davidbau/iccv' +
+        '/%s_iter_%d/html/image/conv5-%04d.jpg' % (basename, iter, zunit))
 
 def output_image_filename(basename, iter, zunit):
-    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_finetune' +
-            '/%s_iter_%d/html/image/conv5-%04d_crop.jpg' % (basename, iter, zunit))
+#    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_finetune' +
+    return ('/data/vision/torralba/scratch2/davidbau/iccv' +
+        '/%s_iter_%d/html/image/conv5-%04d_crop.jpg' % (basename, iter, zunit))
 
 def biggest_square_bbox(data, smooth_radius, threshold):
     data_slices = find_paws(data, smooth_radius=smooth_radius, threshold=threshold)
@@ -191,7 +192,7 @@ def process_iteration(basename, iteration, show_things=False):
     for zunit in range(256):
         input_image = input_image_filename(basename, iteration, zunit)
         output_image = output_image_filename(basename, iteration, zunit)
-        if os.path.exists(output_image)==False:
+        if os.path.exists(output_image)==False and os.path.exists(input_image)==True:
             print 'processing ' + input_image
             data = imread(input_image)
             cropped = crop_tiled_image(data)
@@ -204,7 +205,7 @@ def process_iteration(basename, iteration, show_things=False):
 
 
 def process_snapshot():
-    name = '/data/vision/oliva/scenedataset/modelzoo/list_finetune_imagenet2places.txt'
+    name = '/data/vision/oliva/scenedataset/modelzoo/list_iterations.txt'
     with open(name) as f:
         lines = f.readlines()
     for line in lines:
@@ -218,7 +219,11 @@ def process_snapshot():
         iteration = int(items[-1])
         process_iteration(basename, iteration)
 
+def process_snapshot_iterations():
+    basename = 'places'
+    iters = [1,2,4,9,20,44,99,223,492,1108,2446,5509,12164,27396,60491,136238,300818,600818,1200818,2400818]
+    for iteration in iters:
+        process_iteration(basename, iteration)
 
-process_snapshot()
-#process_iteration('caffeNet_imagenet2places', 1, show_things=False)
 
+process_snapshot_iterations()

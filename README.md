@@ -3,8 +3,8 @@
 ## Introduction
 This repository contains the codes and results for unit visualization and segmentation. Some of the codes have been used for the [ICLR'15 paper](https://arxiv.org/pdf/1412.6856.pdf) Object Detectors Emerge in Deep Scene CNNs. You can use this toolkit with the naive [caffe](https://github.com/BVLC/caffe), with matcaffe and pycaffe compiled. This toolkit includes the following functions:
 
-* ```generate_unitsegments.m```: Code to generate the visualization for all the units at one layer.
-* ```generate_unitsegments_all.m```: Code to generate the visualization for all the units for all the selected layer.
+* ```extract_features.m```: Code to extract the CNN activation at the selected layers for any given images.
+* ```generate_unitsegments.m```: Code to generate the visualization for all the units at the selected layer.
 * ```unit_annotation```: the results of unit annotation for Places-AlexNet and ImageNet-AlexNet.
 * ```unit_segmentation```: the code to generate image segmentation for a single image using the synthetic receptive field.
 * ```minimal_image```: possion removal of the image content, to generate the minimal images.
@@ -35,8 +35,7 @@ Samples of unit segmentation are shown below. Each row indicates the images segm
 * Generate the minimal image. 
 ```
     cd minimal_image
-    matlab
-    demo_bases
+    matlab -nodisplay -r demo_bases
 ```
 Sample of the bases and images generated from combining the bases:
 ![bases](http://places.csail.mit.edu/unit_annotation/images/minimal_image.png)
@@ -44,12 +43,15 @@ Sample of the bases and images generated from combining the bases:
 * Generate image segmentation using the synthetic receptive field of one unit.
 ```
     cd unit_segmentation
-    matlab
-    demo_unitsegments
+    matlab -nodisplay -r demo_unitsegments
 ```
 It generates the image segmentation like this:
 ![unitsegmentation](http://places.csail.mit.edu/unit_annotation/images/sample_segment.png)
 
+* Extract the CNN features from any layers of any CNNs for any images. It will output the CNN features for the selected layers.
+```
+    matlab -nodisplay -r extract_features
+```
 ## References
 If you find the toolkit useful, please cite our ICLR'15 paper:
 ```

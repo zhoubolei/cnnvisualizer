@@ -1,10 +1,9 @@
-%% sample code to generate the top ranked image segmentation using the activation maps for each unit.
+%% sample code to generate the top ranked image segmentation using the activation maps for each unit for all the layers
+% written by Bolei Zhou
 
-addpath('/data/vision/torralba/gigaSUN/caffe-cuda8.0/matlab');
+addpath('yourpath/caffe/matlab');
 
-%% the candidate image set: in the ICLR'15 experiments, we combine the images of SUN397 and the images of ILSVRC'12 validation set. You could use your own image set.
-
-target_folder = 'result_segments';
+% load the sample dataset
 imageList = textread('images/imagelist.txt','%s');
 root_dataset = 'images';
 nImgs = numel(imageList);
@@ -13,52 +12,31 @@ for i=1:nImgs
 end
 
 
-if ~exist(target_folder)
-    mkdir(target_folder)
+
+device_id = 0;
+       
+zoo_path = 'models';
+netID = 2;
+if netID == 1
+    network = 'caffe_reference_places365';
+    layers = {'conv5','conv4','conv3','conv2','conv1'};
+elseif netID == 2
+    network = 'vgg16_places365'
+    layers = {'conv5_3','conv5_2','conv5_1','conv4_3','conv4_2','conv4_1','conv3_3','conv3_2','conv3_1','conv2_2','conv2_1','conv1_1'};
 end
 
 
-net_batch = 1;
-device_id = 1;
-        
-if net_batch == 1
-    net_names = {
-        'imagenet_alexnet'
-        'places205_alexnet'
-    };
-    net_prototxts = {
-        'model/alexnet_deploy.prototxt'
-        'model/alexnet_deploy.prototxt'
-    }; 
-    net_binaries = {
-        'model/caffe_reference_imagenet.caffemodel'
-        'model/caffe_reference_places205.caffemodel'
-    };    
-    
-elseif net_batch == 2
-    net_names = {
-        'places365_alexnet'
-    };
-    net_prototxts = {
-        'model/alexnet_deploy.prototxt'
-    };
-    net_binaries = {
-        'model/caffe_reference_places365.caffemodel'
-    };
-elseif net_batch == 3
-    net_names = {
-        'places205_vgg16'
-    };
-    net_prototxts = {
-        'model/vgg16_deploy.prototxt'
-    };
-    net_binaries = {
-        'model/vgg16_places205.caffemodel'
-    };
-end
+
+net_prototxt = sprintf('%s/%s.prototxt', zoo_path, network);
+net_binary = sprintf('%s/%s.caffemodel', zoo_path, network);
 
 %% standard setup caffe
 use_gpu = 1;
+
+target_folder = fullfile('result_segments', network);
+if ~exist(target_folder)
+    mkdir(target_folder)
+end
 
 if(use_gpu)
     caffe.set_mode_gpu();
@@ -67,21 +45,13 @@ else
     caffe.set_mode_cpu();
 end
 
-%% check the model and prototxt could beloaded
-for i = 1:numel(net_names)
-    name_current = net_names{i};
-    prototxt_current = fullfile(net_prototxts{i});
-    binary_current = net_binaries{i};
-    net = caffe.Net(prototxt_current, binary_current, 'test');
-    disp([name_current ' verified']);
-    caffe.reset_all() 
-end
+net = caffe.Net(net_prototxt, net_binary, 'test');
 
 %% the feature extraction and image segmentation process
 cropSize = [150 150];
 topNum = 30; 
 inputImg_size = [224 224];
-threshold_segment = 0.4; % it controls the segmentation
+threshold_segment = 0.4; % it controls the tightness of the segmentation
 
 % loading images in parallel
 if matlabpool('size')==0
@@ -91,12 +61,7 @@ if matlabpool('size')==0
     end
 end
 
-for modelID = 1:numel(net_names)
-    name_current = net_names{modelID};
-    prototxt_current = net_prototxts{modelID};
-    binary_current = net_binaries{modelID};
-    net = caffe.Net(prototxt_current, binary_current, 'test');
-
+if ~exist('layers_unitMax','var')
     % get the network architecture
     layernames = net.blob_names;
     netInfo = cell(size(layernames,1),3);
@@ -116,9 +81,20 @@ for modelID = 1:numel(net_names)
     batch_size = netInfo{1,3}(4);
     num_batches = ceil(nImgs / batch_size);
     
-    num_units = netInfo{end,3}(3);
     %% feature extraction step
-    feature_unitMax = zeros(numel(imageList), num_units, 'single'); % record the max value
+    num_layers = numel(layers);
+    layers_unitMax = cell(num_layers,1);
+    num_units_layers = zeros(num_layers,1);
+    for i=1:num_layers
+        layerID = find(strcmp(netInfo(:,1),layers{i}) == 1);
+        activation_struct = netInfo{layerID,3};
+        param_layers = net.params(layers{i},1).get_data();
+        num_unit = size(param_layers, 4);
+        feature_unitMax = zeros(numel(imageList), num_unit, 'single'); % record the max value
+        layers_unitMax{i} = feature_unitMax;
+        num_units_layers(i) = num_unit;
+    end
+
     for curBatchID=1:num_batches
         [imBatch] = generateBatch( imageList(:,1), curBatchID, batch_size, num_batches, IMAGE_MEAN, CROPPED_DIM);
         scores = net.forward({imBatch});
@@ -128,44 +104,45 @@ for modelID = 1:numel(net_names)
         else
             curEndIDX = curBatchID*batch_size;
         end
-        curFeatures_batch = scores{1};
-        curFeatures_batch = max(curFeatures_batch,[],1);
-        curFeatures_batch = max(curFeatures_batch,[],2);
-        curFeatures_batch = squeeze(curFeatures_batch);
-        feature_unitMax(curStartIDX:curEndIDX,:) = curFeatures_batch(:, 1:curEndIDX-curStartIDX+1)';   
-        
-        max_batch = max(curFeatures_batch,[],2);
-        disp([name_current  ' feature extraction:' num2str(curBatchID) '/' num2str(num_batches)]);
+        for layerID = 1:num_layers
+            curFeatures_batch = net.blobs(layers{layerID}).get_data();
+            curFeatures_batch = max(curFeatures_batch,[],1);
+            curFeatures_batch = max(curFeatures_batch,[],2);
+            curFeatures_batch = squeeze(curFeatures_batch);
+            layers_unitMax{layerID}(curStartIDX:curEndIDX,:) = curFeatures_batch(:, 1:curEndIDX-curStartIDX+1)';   
+        end
+        disp([network  ' feature extraction:' num2str(curBatchID) '/' num2str(num_batches)]);
     end 
+    save(sprintf('unitMax_%s.mat', network),'layers_unitMax','layers', '-v7.3')
+end
     
-    
-    %% start segmentation 
-
-    saveFolder = fullfile(target_folder, name_current);
+%% start segmentation given the top activations of each image.
+for layerID = 1:numel(layers)
+    name_current = layers{layerID};
+    saveFolder = fullfile(target_folder, 'image');
     
     if ~exist(saveFolder)
         mkdir(saveFolder);
     end
-    fileName = [saveFolder '.html'];
+    fileName = sprintf('%s/%s.html', target_folder, layers{layerID});
+
     fp = fopen(fileName,'w');
     fprintf(fp,'<html>\n');
     fprintf(fp,'<head><style> img { height: 150px;} </style></head>\n');
     fprintf(fp,'<body>\n');
     fprintf(fp,'<hr/>');
     fprintf(fp,'<h2>%s</h2>\n', name_current);
-    fprintf(fp,'<p>%s<br>%s</p>\n',prototxt_current, binary_current);
-    for unitID = 1:num_units
+    for unitID = 1:num_units_layers(layerID)
         fprintf(fp,'<br>%s<br>\n',['unit ' num2str(unitID)]);
-        fprintf(fp,'<img src="%s" />\n', fullfile(name_current, ['unitID' num2str(unitID) '.jpg']));
+        fprintf(fp,'<img src="%s" />\n', fullfile('image', sprintf('%s-%04d.jpg', layers{layerID}, unitID-1)));% 0 index
     end
     fprintf(fp,'<hr/>');
     fprintf(fp,'</body></html>\n');
     fclose(fp);
-    disp([fileName])
+    disp(fileName)
     %% unit segmentation step
-    
-    for unitID = 1:num_units
-        curFeatureMax = feature_unitMax(:, unitID);
+    for unitID = 1:num_units_layers(layerID)
+        curFeatureMax = layers_unitMax{layerID}(:, unitID);
         [maxValue_sorted, imgIDX_sorted] = sort(curFeatureMax, 'descend');
         curSegmentation = [];
         
@@ -176,7 +153,7 @@ for modelID = 1:numel(net_names)
         [imBatch] = generateBatch( imageList_top, 1, batch_size, num_batches, IMAGE_MEAN, CROPPED_DIM);
         scores = net.forward({imBatch});
         scores = scores{1};
-        
+        curFeatures_batch = net.blobs(layers{layerID}).get_data();
         for imgID = 1:min(topNum, batch_size)
             
             try 
@@ -188,7 +165,7 @@ for modelID = 1:numel(net_names)
             if size(curImgShow,3) == 1
                 curImgShow = repmat(curImgShow,[1 1 3]);
             end
-            curGridResponse  = squeeze(scores(:, :, unitID, imgID))';
+            curGridResponse  = squeeze(curFeatures_batch(:, :, unitID, imgID))';
             curGridResponse = abs(curGridResponse);
             
             curGridResponse = imfilter(curGridResponse, fspecial('average'));
@@ -202,9 +179,8 @@ for modelID = 1:numel(net_names)
             curImgResult = imresize(curImgResult,cropSize);
             curSegmentation = [curSegmentation ones(size(curImgResult,1),3,3) curImgResult];
         end
-        imwrite(curSegmentation, [saveFolder '/unitID' num2str(unitID) '.jpg']);
-        disp([name_current ' segmenting unitID' num2str(unitID)]);
+        imwrite(curSegmentation, sprintf('%s/%s-%04d.jpg', saveFolder, layers{layerID}, unitID-1));
+        disp([layers{layerID} ' segmenting unitID' num2str(unitID)]);
     end
-    caffe.reset_all()     
 end
-
+caffe.reset_all()     
