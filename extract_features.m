@@ -15,8 +15,8 @@ device_id = 0; % GPU ID to use
 
 
 % load the testing images
-data_name = 'talia_june20';
-root_images = '/data/vision/torralba/gigaSUN/www/unit_annotation/data_features';
+data_name = 'testset1';
+root_images = 'data_features';
 imageList = textread(fullfile(root_images, 'imagelist.txt'),'%s');
 num_images = numel(imageList);
 for i=1:num_images
