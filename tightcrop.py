@@ -142,12 +142,12 @@ if False:
 
 
 def input_image_filename(basename, iter, zunit):
-#    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_finetune' +
+#    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_iterations' +
     return ('/data/vision/torralba/scratch2/davidbau/iccv' +
         '/%s_iter_%d/html/image/conv5-%04d.jpg' % (basename, iter, zunit))
 
 def output_image_filename(basename, iter, zunit):
-#    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_finetune' +
+#    return ('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_iterations' +
     return ('/data/vision/torralba/scratch2/davidbau/iccv' +
         '/%s_iter_%d/html/image/conv5-%04d_crop.jpg' % (basename, iter, zunit))
 
@@ -192,6 +192,8 @@ def process_iteration(basename, iteration, show_things=False):
     for zunit in range(256):
         input_image = input_image_filename(basename, iteration, zunit)
         output_image = output_image_filename(basename, iteration, zunit)
+        print input_image
+        print output_image
         if os.path.exists(output_image)==False and os.path.exists(input_image)==True:
             print 'processing ' + input_image
             data = imread(input_image)
@@ -209,6 +211,7 @@ def process_snapshot():
     with open(name) as f:
         lines = f.readlines()
     for line in lines:
+        print  line
         model_name = line.rstrip()
         items = model_name.split('/')
         model_name = items[1]
@@ -217,6 +220,7 @@ def process_snapshot():
         items = model_name.split('_')
         basename = '_'.join(items[:-2])
         iteration = int(items[-1])
+        print basename, iteration
         process_iteration(basename, iteration)
 
 def process_snapshot_iterations():
