@@ -14,14 +14,14 @@ from dataset import Dataset
 import torch.utils.data as data
 
 # image datasest to be processed
-name_dataset = 'testset1';
-root_images = 'data_features';
-imglist = textread(fullfile(root_images, 'imagelist.txt'),'%s');
-num_images = numel(imageList);
-for i=1:num_images
-    imglist{i} = fullfile(root_images, imglist{i});
-end
-
+name_dataset = 'sun+imagenetval'
+root_image = 'data/images'
+with open('data/images/imagelist.txt') as f:
+    lines = f.readlines()
+imglist = []
+for line in lines:
+    line = line.rstrip()
+    imglist.append(root_image + '/' + line)
 
 
 # load the pre-trained weights
