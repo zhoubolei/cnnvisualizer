@@ -1,4 +1,4 @@
-# UnitVisSeg: Toolkit for Visualizing and Segmenting Units in Deep CNNs.
+# UnitVisualizer: Toolkit for Visualizing Units in Deep Convolutional Neural Networks
 
 ## Introduction
 This repository contains the codes and results for unit visualization and segmentation. Some of the codes have been used for the [ICLR'15 paper](https://arxiv.org/pdf/1412.6856.pdf) Object Detectors Emerge in Deep Scene CNNs. You can use this toolkit with the naive [caffe](https://github.com/BVLC/caffe), with matcaffe and pycaffe compiled, or [pyTorch](http://pytorch.org/). This toolkit includes the following functions:
