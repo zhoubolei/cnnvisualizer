@@ -16,20 +16,22 @@ from dataset import Dataset
 import torch.utils.data as data
 import torchvision.models as models
 
-# dataset setup
+# visualization setup
 img_size = (224, 224) # input image size
-batch_size = 64
-num_workers = 6
-segment_size = (100,100)
+segment_size = (100,100) # the unit segmentaiton size
 num_top = 15 # how many top activated images to extract
 threshold_scale = 0.2 # the scale used to segment the feature map. Smaller the segmentation will be tighter.
 
+# dataset setup
+batch_size = 64
+num_workers = 6
+
 
 # load the pre-trained weights
-id_model = 3
+id_model = 2
 if id_model == 1:
     model_name = 'wideresnet_places365'
-    model_file = '/data/vision/oliva/scenedataset/places2new/models/whole_wideresnet18_places365.pth.tar'
+    model_file = 'whole_wideresnet18_places365.pth.tar' # download it from https://github.com/CSAILVision/places365/blob/master/run_placesCNN_unified.py
     model = torch.load(model_file)
     features_names = ['layer4']
 elif id_model == 2:
@@ -105,9 +107,6 @@ for batch_idx, (input, paths) in enumerate(loader):
         maxfeatures[i][start_idx:end_idx] = np.max(np.max(feat_batch,3),2)
 
 # generate the top activated images
-segment_size = (100,100)
-num_top = 15 # how many top activated images to extract
-threshold_scale = 0.2 # the scale used to segment the feature map
 output_folder = 'result_segments/%s' % model_name
 if not os.path.exists(output_folder):
     os.makedirs(output_folder + '/image')
