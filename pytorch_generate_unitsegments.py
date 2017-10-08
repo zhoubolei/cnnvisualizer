@@ -15,12 +15,16 @@ from PIL import Image
 from dataset import Dataset
 import torch.utils.data as data
 import torchvision.models as models
+import tightcrop
 
 # visualization setup
-img_size = (224, 224) # input image size
-segment_size = (100,100) # the unit segmentaiton size
-num_top = 15 # how many top activated images to extract
-threshold_scale = 0.2 # the scale used to segment the feature map. Smaller the segmentation will be tighter.
+img_size = (224, 224)       # input image size
+segment_size = (120,120)    # the unit segmentaiton size
+num_top = 12                # how many top activated images to extract
+margin = 3                  # pixels between two segments
+threshold_scale = 0.2       # the scale used to segment the feature map. Smaller the segmentation will be tighter.
+flag_crop = 1               # whether to generate tight crop for the unit visualiation.
+flag_classspecific = 1      # whether to generate the class specific unit for each category (only works for network with global average pooling at the end)
 
 # dataset setup
 batch_size = 64
@@ -28,10 +32,23 @@ num_workers = 6
 
 
 # load the pre-trained weights
-id_model = 2
+id_model = 1
 if id_model == 1:
     model_name = 'wideresnet_places365'
     model_file = 'whole_wideresnet18_places365.pth.tar' # download it from https://github.com/CSAILVision/places365/blob/master/run_placesCNN_unified.py
+    if not os.path.exists(model_file):
+        os.system('wget http://places2.csail.mit.edu/models_places365/' + model_file)
+        os.system('wget https://raw.githubusercontent.com/csailvision/places365/master/wideresnet.py')
+    class_file = 'categories_places365.txt'
+    if not os.path.exists(class_file):
+        synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/categories_places365.txt'
+        os.system('wget ' + synset_url)
+    classes = list()
+    with open(class_file) as f:
+        for line in f:
+            classes.append(line.strip().split(' ')[0][3:])
+    classes = tuple(classes)
+
     model = torch.load(model_file)
     features_names = ['layer4']
 elif id_model == 2:
@@ -42,13 +59,10 @@ elif id_model == 3:
     model_name = 'squeezenet_imagenet'
     model = models.squeezenet1_0(pretrained=True)
     features_names = ['features']
-elif id_model == 4:
-    model_name = 'alexnet_imagenet'
-    model = models.alexnet(pretrained=True)
-    features_names = ['features']
 
 model.eval()
 model.cuda()
+
 
 # image datasest to be processed
 name_dataset = 'sun+imagenetval'
@@ -59,9 +73,6 @@ imglist = []
 for line in lines:
     line = line.rstrip()
     imglist.append(root_image + '/' + line)
-
-
-
 
 features_blobs = []
 def hook_feature(module, input, output):
@@ -117,9 +128,40 @@ for layerID, layer in enumerate(features_names):
     with open(file_html, 'w') as f:
         num_units = maxfeatures[layerID].shape[1]
         lines_units = ['%s-unit%03d.jpg' % (layer, unitID) for unitID in range(num_units)]
-        lines_units = ['<p>unit%03d<br><img src="image/%s"></p>'%(unitID, lines_units[unitID]) for unitID in range(num_units)]
-        f.write('\n'.join(lines_units))
-        print(file_html)
+        lines_units = ['unit%03d<br><img src="image/%s">'%(unitID, lines_units[unitID]) for unitID in range(num_units)]
+        f.write('\n<br>'.join(lines_units))
+
+    # it contains the cropped regions
+    if flag_crop == 1:
+        file_html_crop = os.path.join(output_folder, layer + '_crop.html')
+        with open(file_html_crop, 'w') as f:
+            num_units = maxfeatures[layerID].shape[1]
+            lines_units = ['%s-unit%03d_crop.jpg' % (layer, unitID) for unitID in range(num_units)]
+            lines_units = ['unit%03d<br><img src="image/%s">'%(unitID, lines_units[unitID]) for unitID in range(num_units)]
+            f.write('\n<br>'.join(lines_units))
+
+if flag_classspecific == 1:
+    num_topunit_class = 3
+    layer_lastconv = features_names[-1]
+    # get the softmax weight
+    params = list(model.parameters())
+    weight_softmax = np.squeeze(params[-2].data.cpu().numpy())
+
+    file_html = os.path.join(output_folder, 'class_specific_unit.html')
+    output_lines = []
+    for classID in range(len(classes)):
+        line = '<h2>%s</h2>' % classes[classID]
+        idx_units_sorted = np.argsort(np.squeeze(weight_softmax[classID]))[::-1]
+        for sortID in range(num_topunit_class):
+            unitID = idx_units_sorted[sortID]
+            weight_unit = weight_softmax[classID][unitID]
+            line += 'weight=%.3f %s<br>' % (weight_unit, lines_units[unitID])
+        line = '<p>%s</p>' % line
+        output_lines.append(line)
+
+    with open(file_html, 'w') as f:
+        f.write('\n'.join(output_lines))
+
 
 # generate the unit visualization
 for layerID, layer in enumerate(features_names):
@@ -163,7 +205,10 @@ for layerID, layer in enumerate(features_names):
             img_mask = np.multiply(img, mask[:,:, np.newaxis])
             img_mask = np.uint8(img_mask * 255)
             output_unit.append(img_mask)
-            output_unit.append(np.uint8(np.ones((segment_size[0],4,3))*255))
+            output_unit.append(np.uint8(np.ones((segment_size[0],margin,3))*255))
         montage_unit = np.concatenate(output_unit, axis=1)
         cv2.imwrite(os.path.join(output_folder, 'image', '%s-unit%03d.jpg'%(layer, unitID)), montage_unit)
-
+        if flag_crop == 1:
+            montage_unit_crop = tightcrop.crop_tiled_image(montage_unit, margin)
+            cv2.imwrite(os.path.join(output_folder, 'image', '%s-unit%03d_crop.jpg'%(layer, unitID)), montage_unit_crop)
+print('done check results in ' + output_folder)

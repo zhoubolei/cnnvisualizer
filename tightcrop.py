@@ -182,10 +182,10 @@ def best_tightcrop(imagedata):
 
 def crop_tiled_image(data, border=3):
     outdata = data.copy()
-    height = data.shape[0]
-    for x in range(border, data.shape[1], height + border):
-        onesquare = data[:,x:x+height,:]
-        outdata[:,x:x+height,:] = best_tightcrop(onesquare)
+    width = data.shape[0]
+    for x in range(0, data.shape[1], width + border):
+        onesquare = data[:,x:x+width,:]
+        outdata[:,x:x+width,:] = best_tightcrop(onesquare)
     return outdata
 
 def process_iteration(basename, iteration, show_things=False):
@@ -230,4 +230,3 @@ def process_snapshot_iterations():
         process_iteration(basename, iteration)
 
 
-process_snapshot_iterations()
