@@ -15,7 +15,6 @@ from PIL import Image
 from dataset import Dataset
 import torch.utils.data as data
 import torchvision.models as models
-import tightcrop
 
 # visualization setup
 img_size = (224, 224)       # input image size
@@ -48,7 +47,6 @@ if id_model == 1:
         for line in f:
             classes.append(line.strip().split(' ')[0][3:])
     classes = tuple(classes)
-
     model = torch.load(model_file)
     features_names = ['layer4']
 elif id_model == 2:
@@ -102,7 +100,7 @@ maxfeatures = [None] * len(features_names)
 num_batches = len(dataset) / batch_size
 for batch_idx, (input, paths) in enumerate(loader):
     del features_blobs[:]
-    print '%d / %d' % (batch_idx+1, num_batches)
+    print('%d / %d' % (batch_idx+1, num_batches))
     input = input.cuda()
     input_var = V(input, volatile=True)
     logit = model.forward(input_var)
@@ -181,7 +179,7 @@ for layerID, layer in enumerate(features_names):
         shuffle=False)
     for unitID, (input, paths) in enumerate(loader_top):
         del features_blobs[:]
-        print '%d / %d' % (unitID+1, num_units)
+        print('%d / %d' % (unitID+1, num_units))
         input = input.cuda()
         input_var = V(input, volatile=True)
         logit = model.forward(input_var)
@@ -209,6 +207,8 @@ for layerID, layer in enumerate(features_names):
         montage_unit = np.concatenate(output_unit, axis=1)
         cv2.imwrite(os.path.join(output_folder, 'image', '%s-unit%03d.jpg'%(layer, unitID)), montage_unit)
         if flag_crop == 1:
+            # load the library to crop image
+            import tightcrop
             montage_unit_crop = tightcrop.crop_tiled_image(montage_unit, margin)
             cv2.imwrite(os.path.join(output_folder, 'image', '%s-unit%03d_crop.jpg'%(layer, unitID)), montage_unit_crop)
 print('done check results in ' + output_folder)

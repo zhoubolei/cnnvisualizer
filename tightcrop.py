@@ -192,10 +192,8 @@ def process_iteration(basename, iteration, show_things=False):
     for zunit in range(256):
         input_image = input_image_filename(basename, iteration, zunit)
         output_image = output_image_filename(basename, iteration, zunit)
-        print input_image
-        print output_image
         if os.path.exists(output_image)==False and os.path.exists(input_image)==True:
-            print 'processing ' + input_image
+            print('processing ' + input_image)
             data = imread(input_image)
             cropped = crop_tiled_image(data)
             imsave(output_image, cropped)
@@ -211,7 +209,7 @@ def process_snapshot():
     with open(name) as f:
         lines = f.readlines()
     for line in lines:
-        print  line
+        print(line)
         model_name = line.rstrip()
         items = model_name.split('/')
         model_name = items[1]
@@ -220,7 +218,7 @@ def process_snapshot():
         items = model_name.split('_')
         basename = '_'.join(items[:-2])
         iteration = int(items[-1])
-        print basename, iteration
+        print(basename, iteration)
         process_iteration(basename, iteration)
 
 def process_snapshot_iterations():
