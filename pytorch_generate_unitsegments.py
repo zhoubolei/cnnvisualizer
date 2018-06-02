@@ -30,6 +30,21 @@ batch_size = 64
 num_workers = 6
 
 
+"""
+using old version of pytorch to load new torch models
+"""
+import torch._utils
+try:
+    torch._utils._rebuild_tensor_v2
+except AttributeError:
+    def _rebuild_tensor_v2(storage, storage_offset, size, stride, requires_grad, backward_hooks):
+        tensor = torch._utils._rebuild_tensor(storage, storage_offset, size, stride)
+        tensor.requires_grad = requires_grad
+        tensor._backward_hooks = backward_hooks
+        return tensor
+    torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
+
+
 # load the pre-trained weights
 id_model = 1
 if id_model == 1:
