@@ -16,11 +16,14 @@ Matlab script:
 * ```unit_segmentation```: code to generate image segmentation for a single image using the synthetic receptive field.
 * ```minimal_image```: possion removal of the image content, to generate the minimal images.
 
+## PyTorch Environment
+
+`pip install -r requirement.txt`
 
 ## Download
 * Clone the code from github
 ```
-    git clone https://github.com/metalbubble/unitvisseg.git
+    git clone https://github.com/metalbubble/cnnvisualizer.git
     cd unitvisseg
 ```
 * Download the image samples and the pretrained models

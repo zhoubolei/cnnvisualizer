@@ -30,6 +30,21 @@ batch_size = 64
 num_workers = 6
 
 
+"""
+using old version of pytorch to load new torch models
+"""
+import torch._utils
+try:
+    torch._utils._rebuild_tensor_v2
+except AttributeError:
+    def _rebuild_tensor_v2(storage, storage_offset, size, stride, requires_grad, backward_hooks):
+        tensor = torch._utils._rebuild_tensor(storage, storage_offset, size, stride)
+        tensor.requires_grad = requires_grad
+        tensor._backward_hooks = backward_hooks
+        return tensor
+    torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
+
+
 # load the pre-trained weights
 id_model = 1
 if id_model == 1:
@@ -37,18 +52,7 @@ if id_model == 1:
     model_file = 'whole_wideresnet18_places365.pth.tar' # download it from https://github.com/CSAILVision/places365/blob/master/run_placesCNN_unified.py
     if not os.path.exists(model_file):
         os.system('wget http://places2.csail.mit.edu/models_places365/' + model_file)
-        os.system('wget https://raw.githubusercontent.com/csailvision/places365/master/wideresnet.py')
-    class_file = 'categories_places365.txt'
-    if not os.path.exists(class_file):
-        synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/categories_places365.txt'
-        os.system('wget ' + synset_url)
-    classes = list()
-    with open(class_file) as f:
-        for line in f:
-            classes.append(line.strip().split(' ')[0][3:])
-    classes = tuple(classes)
-    model = torch.load(model_file)
-    features_names = ['layer4']
+        os.system('wget https://raw.githubusercontent.com/csailvision/places365/master/wideresnet.py')    
 elif id_model == 2:
     model_name = 'resnet18_imagenet'
     model = models.resnet18(pretrained=True)
@@ -57,6 +61,28 @@ elif id_model == 3:
     model_name = 'squeezenet_imagenet'
     model = models.squeezenet1_0(pretrained=True)
     features_names = ['features']
+
+# config the class list file here
+class_file = 'categories_places365.txt'
+if id_model == 1:
+    if not os.path.exists(class_file):
+        synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/categories_places365.txt'
+        os.system('wget ' + synset_url)
+
+if not os.path.exists(class_file):
+    print('Your category list does not exist')
+    raise FileNotFoundError
+classes = list()
+with open(class_file) as f:
+    for line in f:
+            classes.append(line.strip().split(' ')[0][3:])
+classes = tuple(classes)
+model = torch.load(model_file)
+
+
+# feature extraction layer setup
+
+features_names = ['layer4']
 
 model.eval()
 model.cuda()
