@@ -9,7 +9,7 @@ Pillow==5.1.0
 pyparsing==2.2.0
 python-dateutil==2.7.3
 pytz==2018.4
-PyYAML==3.12
+PyYAML==5.1
 scipy==1.1.0
 six==1.11.0
 subprocess32==3.5.1
