@@ -17,10 +17,8 @@ import scipy.spatial as spatial
 import scipy.misc as misc
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import urllib2
 
-from scipy.misc import imresize, imread, imsave
-
+import cv2
 class BBox(object):
     def __init__(self, x1, y1, x2, y2):
         '''
@@ -122,7 +120,6 @@ if False:
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
-    # data = misc.imread(urllib2.urlopen('https://i.stack.imgur.com/ueOHC.png'))
     data = misc.imread('/data/vision/torralba/gigaSUN/www/unit_annotation/result_segments_iterations/caffeNet_imagenet2places_iter_1/html/image/conv5-0000.jpg')
     data = data[:160,3:163,:]
 
@@ -178,7 +175,7 @@ def best_tightcrop(imagedata):
     # Don't zoom in to too tiny an area - just return the original
     if bbox.x2 - bbox.x1 < 10:
         return imagedata
-    return imresize(imagedata[bbox.y1:bbox.y2, bbox.x1:bbox.x2, :], imagedata.shape[:2])
+    return cv2.resize(src=imagedata[bbox.y1:bbox.y2, bbox.x1:bbox.x2, :], dsize=imagedata.shape[:2])
 
 def crop_tiled_image(data, border=3):
     outdata = data.copy()
@@ -194,9 +191,9 @@ def process_iteration(basename, iteration, show_things=False):
         output_image = output_image_filename(basename, iteration, zunit)
         if os.path.exists(output_image)==False and os.path.exists(input_image)==True:
             print('processing ' + input_image)
-            data = imread(input_image)
+            data = cv2.imread(input_image)
             cropped = crop_tiled_image(data)
-            imsave(output_image, cropped)
+            cv2.imwrite(output_image, cropped)
             if show_things:
                 plt.imshow(data)
                 plt.show()

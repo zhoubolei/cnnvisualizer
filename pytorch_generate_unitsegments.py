@@ -9,7 +9,6 @@ from torch.nn import functional as F
 import os
 import pdb
 import numpy as np
-from scipy.misc import imresize as imresize
 import cv2
 from PIL import Image
 from dataset import Dataset
@@ -22,7 +21,7 @@ segment_size = (120,120)    # the unit segmentaiton size
 num_top = 12                # how many top activated images to extract
 margin = 3                  # pixels between two segments
 threshold_scale = 0.2       # the scale used to segment the feature map. Smaller the segmentation will be tighter.
-flag_crop = 1               # whether to generate tight crop for the unit visualiation.
+flag_crop = 0               # whether to generate tight crop for the unit visualiation.
 flag_classspecific = 1      # whether to generate the class specific unit for each category (only works for network with global average pooling at the end)
 
 # dataset setup
@@ -33,6 +32,36 @@ num_workers = 6
 """
 using old version of pytorch to load new torch models
 """
+ # hacky way to deal with the Pytorch 1.0 update
+def recursion_change_bn(module):
+    if isinstance(module, torch.nn.BatchNorm2d):
+        module.track_running_stats = 1
+    else:
+        for i, (name, module1) in enumerate(module._modules.items()):
+            module1 = recursion_change_bn(module1)
+    return module
+
+def load_model():
+    # this model has a last conv feature map as 14x14
+
+    model_file = 'wideresnet18_places365.pth.tar'
+    if not os.access(model_file, os.W_OK):
+        os.system('wget http://places2.csail.mit.edu/models_places365/' + model_file)
+        os.system('wget https://raw.githubusercontent.com/csailvision/places365/master/wideresnet.py')
+
+    import wideresnet
+    model = wideresnet.resnet18(num_classes=365)
+    checkpoint = torch.load(model_file, map_location=lambda storage, loc: storage)
+    state_dict = {str.replace(k,'module.',''): v for k,v in checkpoint['state_dict'].items()}
+    model.load_state_dict(state_dict)
+    # hacky way to deal with the upgraded batchnorm2D and avgpool layers...
+    for i, (name, module) in enumerate(model._modules.items()):
+        module = recursion_change_bn(model)
+    model.avgpool = torch.nn.AvgPool2d(kernel_size=14, stride=1, padding=0)
+    model.eval()
+    model.cuda()
+    return model
+
 import torch._utils
 try:
     torch._utils._rebuild_tensor_v2
@@ -45,29 +74,17 @@ except AttributeError:
     torch._utils._rebuild_tensor_v2 = _rebuild_tensor_v2
 
 
-# load the pre-trained weights
-id_model = 1
-if id_model == 1:
-    model_name = 'wideresnet_places365'
-    model_file = 'whole_wideresnet18_places365.pth.tar' # download it from https://github.com/CSAILVision/places365/blob/master/run_placesCNN_unified.py
-    if not os.path.exists(model_file):
-        os.system('wget http://places2.csail.mit.edu/models_places365/' + model_file)
-        os.system('wget https://raw.githubusercontent.com/csailvision/places365/master/wideresnet.py')    
-elif id_model == 2:
-    model_name = 'resnet18_imagenet'
-    model = models.resnet18(pretrained=True)
-    features_names = ['layer4']
-elif id_model == 3:
-    model_name = 'squeezenet_imagenet'
-    model = models.squeezenet1_0(pretrained=True)
-    features_names = ['features']
+# load model
+model = load_model()
+print(model)
+model_name = 'wideresnet_places365'
+
 
 # config the class list file here
 class_file = 'categories_places365.txt'
-if id_model == 1:
-    if not os.path.exists(class_file):
-        synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/categories_places365.txt'
-        os.system('wget ' + synset_url)
+if not os.path.exists(class_file):
+    synset_url = 'https://raw.githubusercontent.com/csailvision/places365/master/categories_places365.txt'
+    os.system('wget ' + synset_url)
 
 if not os.path.exists(class_file):
     print('Your category list does not exist')
@@ -77,21 +94,14 @@ with open(class_file) as f:
     for line in f:
             classes.append(line.strip().split(' ')[0][3:])
 classes = tuple(classes)
-model = torch.load(model_file)
-
-
 # feature extraction layer setup
-
 features_names = ['layer4']
-
-model.eval()
-model.cuda()
 
 
 # image datasest to be processed
 name_dataset = 'sun+imagenetval'
-root_image = 'data/images'
-with open('data/images/imagelist.txt') as f:
+root_image = 'images'
+with open('images/imagelist.txt') as f:
     lines = f.readlines()
 imglist = []
 for line in lines:
