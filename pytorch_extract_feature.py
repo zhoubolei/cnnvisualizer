@@ -1,4 +1,11 @@
 # the example script to extract features using pyTorch CNN model
+# BZ
+
+##### please download the test images first ######
+# wget http://places.csail.mit.edu/unit_annotation/data/images.tar
+# tar -xvf images.tar
+##################################################
+
 import torch
 from torch.autograd import Variable as V
 import torchvision.models as models
@@ -19,10 +26,7 @@ root_image = 'images'
 with open(os.path.join(root_image, 'imagelist.txt')) as f:
     lines = f.readlines()
     
-imglist = []
-for line in lines:
-    line = line.rstrip()
-    imglist.append(os.path.join(root_image, line))
+imglist = [os.path.join(root_image, line.rstrip()) for line in lines]
 
 
 # load the pre-trained weights
