@@ -1,13 +1,17 @@
 # the example script to generate the unit segmentation visualization using pyTorch
 # Bolei Zhou
 
+##### please download the test images first ######
+# wget http://places.csail.mit.edu/unit_annotation/data/images.tar
+# tar -xvf images.tar
+##################################################
+
 import torch
 from torch.autograd import Variable as V
 import torchvision.models as models
 from torchvision import transforms as trn
 from torch.nn import functional as F
 import os
-import pdb
 import numpy as np
 import cv2
 from PIL import Image
@@ -101,12 +105,9 @@ features_names = ['layer4']
 # image datasest to be processed
 name_dataset = 'sun+imagenetval'
 root_image = 'images'
-with open('images/imagelist.txt') as f:
+with open(os.path.join(root_image, 'imagelist.txt')) as f:
     lines = f.readlines()
-imglist = []
-for line in lines:
-    line = line.rstrip()
-    imglist.append(root_image + '/' + line)
+imglist = [os.path.join(root_image, line.rstrip()) for line in lines]
 
 features_blobs = []
 def hook_feature(module, input, output):
@@ -154,7 +155,7 @@ for batch_idx, (input, paths) in enumerate(loader):
 # generate the top activated images
 output_folder = 'result_segments/%s' % model_name
 if not os.path.exists(output_folder):
-    os.makedirs(output_folder + '/image')
+    os.makedirs(os.path.join(output_folder, 'image'))
 
 # output the html first
 for layerID, layer in enumerate(features_names):
