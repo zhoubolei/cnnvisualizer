@@ -15,18 +15,19 @@ import torch.utils.data as data
 
 # image datasest to be processed
 name_dataset = 'sun+imagenetval'
-root_image = 'data/images'
-with open('data/images/imagelist.txt') as f:
+root_image = 'images'
+with open(os.path.join(root_image, 'imagelist.txt')) as f:
     lines = f.readlines()
+    
 imglist = []
 for line in lines:
     line = line.rstrip()
-    imglist.append(root_image + '/' + line)
+    imglist.append(os.path.join(root_image, line))
 
 
 # load the pre-trained weights
 name_model = 'wideresnet_places365'
-model_file = '/data/vision/oliva/scenedataset/places2new/models/whole_wideresnet18_places365.pth.tar'
+model_file = 'whole_wideresnet18_places365.pth.tar'
 model = torch.load(model_file)
 model.eval()
 model.cuda()
