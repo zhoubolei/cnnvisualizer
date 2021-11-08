@@ -32,6 +32,11 @@ imglist = [os.path.join(root_image, line.rstrip()) for line in lines]
 # load the pre-trained weights
 name_model = 'wideresnet_places365'
 model_file = 'whole_wideresnet18_places365.pth.tar'
+
+if not os.access(model_file, os.W_OK):
+    os.system('wget http://places2.csail.mit.edu/models_places365/' + model_file)
+    os.system('wget https://raw.githubusercontent.com/csailvision/places365/master/wideresnet.py')
+        
 model = torch.load(model_file)
 model.eval()
 model.cuda()
