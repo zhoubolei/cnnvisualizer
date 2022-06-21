@@ -2,7 +2,7 @@ backports.functools-lru-cache==1.5
 cycler==0.10.0
 kiwisolver==1.0.1
 matplotlib==2.2.2
-numpy==1.14.3
+numpy==1.22.0
 opencv-python==4.2.0.32
 pandas==0.23.0
 Pillow==9.0.1
